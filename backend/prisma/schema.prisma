@@ -1,0 +1,58 @@
+// Prisma schema (prisma/schema.prisma)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// This will define tables for users, countries, universities, programs, and applications
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  provider    String
+  applications Application[]
+  createdAt   DateTime @default(now())
+}
+
+model Country {
+  id         String       @id @default(uuid())
+  name       String
+  visaInfo   String
+  universities University[]
+}
+
+model University {
+  id         String     @id @default(uuid())
+  name       String
+  countryId  String
+  country    Country    @relation(fields: [countryId], references: [id])
+  programs   Program[]
+}
+
+model Program {
+  id            String       @id @default(uuid())
+  name          String
+  universityId  String
+  university    University  @relation(fields: [universityId], references: [id])
+  admissionSteps String     // JSON array of steps
+  visaSteps      String     // JSON array of steps
+  applications   Application[]
+}
+
+model Application {
+  id          String     @id @default(uuid())
+  userId      String
+  programId   String
+  status      String     // e.g. 'admission', 'visa', 'completed'
+  currentStep Int
+  user        User       @relation(fields: [userId], references: [id])
+  program     Program    @relation(fields: [programId], references: [id])
+  createdAt   DateTime   @default(now())
+}
+

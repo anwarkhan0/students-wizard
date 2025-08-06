@@ -1,0 +1,32 @@
+# Ignore Python Bytecode Files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+venv/
+
+# Ignore model weights and tokenizer files
+gpt2-finetuned-support/
+techprimez-aimodel/
+
+# Ignore large datasets (chat_data.txt, support_faq.txt) to keep the repo size small
+chat_data.txt
+support_faq.txt
+*.csv
+*.json
+
+# Ignore lock files created by tokenizers and other caches
+*.lock
+cached_lm_GPT2Tokenizer_128_*.txt
+*.txt.lock
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore log files
+*.log
+
+# Ignore system-specific files
+.DS_Store   # macOS
+Thumbs.db   # Windows
