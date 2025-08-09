@@ -14,6 +14,11 @@ router.use('/admin/universities', universityRoutes);
 router.use('/admin/programs', programRoutes);
 router.use('/admin/steps', stepRoutes);
 
+
+
+// router.use('/applications', applicationRoutes);
+
+
 // User routes
 router.use('/explore', exploreRoutes);
 router.use('/application', applicationRoutes);

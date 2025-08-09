@@ -1,6 +1,9 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 const router = Router();
 
-// Define your routes here
+import { getUniversitiesByCountry, createUniversity } from '../../modules/universities/controller';
+
+router.get('/', getUniversitiesByCountry);
+router.post('/', createUniversity);
 
 export default router;

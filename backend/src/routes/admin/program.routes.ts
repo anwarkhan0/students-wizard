@@ -1,6 +1,9 @@
 import { Router } from 'express';
 const router = Router();
 
-// Define your routes here
+import { getProgramsByUniversity, createProgram } from '../../modules/programs/controller';
+
+router.get('/:universityId', getProgramsByUniversity);
+router.post('/', createProgram);
 
 export default router;

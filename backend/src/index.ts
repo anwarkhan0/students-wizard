@@ -1,23 +1,26 @@
 import express from 'express';
 import routes from './routes';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 const { Client } = require('pg');
 
 dotenv.config();
 
 const app = express();
+app.use(morgan('dev')); 
 app.use(express.json());
+
 app.use('/api', routes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 3000;
+
 
 
 const client = new Client({
-  user: 'your_username',
+  user: 'postgres', // Your PostgreSQL username
   host: 'localhost', // or your PostgreSQL server IP
-  database: 'your_database_name',
-  password: 'your_password',
+  database: 'student-wizard',
+  password: 'login1234',
   port: 5432, // Default PostgreSQL port
 });
 
@@ -26,6 +29,7 @@ async function connectAndQuery() {
     await client.connect();
     const res = await client.query('SELECT NOW()');
     console.log('Database connected at:', res.rows[0].now);
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   } catch (err) {
     console.error('Connection error:', err);
   } finally {

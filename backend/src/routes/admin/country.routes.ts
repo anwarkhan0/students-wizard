@@ -1,6 +1,10 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 const router = Router();
 
-// Define your routes here
+import { getAllCountries, createCountry } from '../../modules/countries/controller';
+
+router.get('/', getAllCountries);
+
+router.post('/', createCountry);
 
 export default router;

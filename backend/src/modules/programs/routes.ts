@@ -1,6 +1,8 @@
-import { Router } from 'express';
+// import { Router } from 'express';
+// import { getProgramsByUniversity } from './controller';
 
-const router = Router();
+// const router = Router();
 
+// // router.get('/:universityId', getProgramsByUniversity);
 
-export default router;
+// export default router;

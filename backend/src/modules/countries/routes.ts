@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import { getAllCountries, createCountry } from './controller';
+// import { Router } from 'express';
+// import { getAllCountries, createCountry } from './controller';
 
-const router = Router();
+// const router = Router();
 
-router.get('/', getAllCountries);
-router.post('/', createCountry);
+// router.get('/', getAllCountries);
+// router.post('/', createCountry);
 
-export default router;
+// export default router;
