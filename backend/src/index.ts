@@ -3,6 +3,10 @@ import routes from './routes';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 const { Client } = require('pg');
+import passport from 'passport';
+import session from 'express-session';
+import cors from 'cors';
+import './auth/strategies/google.strategy';
 
 dotenv.config();
 
@@ -11,9 +15,13 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use('/api', routes);
+app.use(session({ secret: 'my-secret', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 const PORT = process.env.PORT || 3000;
 
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
 
 const client = new Client({
@@ -38,6 +46,8 @@ async function connectAndQuery() {
 }
 
 connectAndQuery();
+
+//for prod
 
 // const { Pool } = require('pg');
 

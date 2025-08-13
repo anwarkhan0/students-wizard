@@ -19,13 +19,16 @@ generator client {
 // - applications: list of applications submitted by the user
 // - createdAt: timestamp when the user was created
 model User {
-  id          String   @id @default(uuid())
-  name        String
-  email       String   @unique
-  provider    String
-  applications Application[]
-  createdAt   DateTime @default(now())
+  id             String   @id @default(uuid())
+  email          String   @unique
+  password       String?  // Nullable for Google users
+  name           String?
+  googleId       String?  @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  applications   Application[]
 }
+
 
 // Country model: represents a country to which students can apply.
 // - id: unique identifier (UUID)
