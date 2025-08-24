@@ -1,14 +1,6 @@
 import type React from "react"
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import { Textarea } from "@/components/ui/textarea"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
     CheckCircle,
     Globe,
@@ -26,11 +18,12 @@ import {
     BookOpen,
 } from "lucide-react"
 
-import { useContext } from "react";
-import { useApplication } from "@/context/ApplicationContext"
 
-function Homepage({ startApplication }) {
-    const {countries, testimonials} = useApplication();
+import { countries } from "../data/countries.js"
+import { testimonials } from "../data/testimonials.js"
+
+function Homepage() {
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
             {/* Navigation */}
@@ -41,9 +34,12 @@ function Homepage({ startApplication }) {
                             <GraduationCap className="h-8 w-8 text-blue-600" />
                             <span className="ml-2 text-xl font-bold text-gray-900">StudyAbroad AI</span>
                         </div>
-                        <Button onClick={startApplication} className="bg-blue-600 hover:bg-blue-700">
+                        <a
+                            href="/application"
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2 transition-colors"
+                        >
                             Start with AI Assistance
-                        </Button>
+                        </a>
                     </div>
                 </div>
             </nav>
@@ -69,14 +65,12 @@ function Homepage({ startApplication }) {
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-4">
-                                <Button
-                                    onClick={startApplication}
-                                    size="lg"
-                                    className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-4"
+                                <a
+                                    href="/application"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2 transition-colors"
                                 >
-                                    Start with AI Assistant
-                                    <Bot className="ml-2 h-5 w-5" />
-                                </Button>
+                                    Start with AI Assistance
+                                </a>
                                 <Button variant="outline" size="lg" className="text-lg px-8 py-4 bg-transparent">
                                     Learn More
                                 </Button>
@@ -247,10 +241,12 @@ function Homepage({ startApplication }) {
                     <p className="text-xl text-gray-600 mb-8">
                         Join thousands of students who have achieved their dreams with our AI assistance.
                     </p>
-                    <Button onClick={startApplication} size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-12 py-4">
-                        Start with AI Assistant
-                        <Bot className="ml-2 h-5 w-5" />
-                    </Button>
+                    <a
+                        href="/application"
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2 transition-colors"
+                    >
+                        Start with AI Assistance
+                    </a>
                 </div>
             </section>
 

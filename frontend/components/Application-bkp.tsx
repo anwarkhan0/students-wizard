@@ -29,7 +29,7 @@ import {
   BookOpen,
 } from "lucide-react"
 
-import AIAssistant from './AIAssistant';
+import AIAssistant from './application/AIAssistant';
 
 function Application() {
 
