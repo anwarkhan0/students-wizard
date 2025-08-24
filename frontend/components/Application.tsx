@@ -1,4 +1,6 @@
-import React from 'react';
+import { useContext } from 'react';
+
+import { ApplicationContext } from '@/context/ApplicationContext';
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -27,9 +29,47 @@ import {
   BookOpen,
 } from "lucide-react"
 
-function Application({getProgressPercentage, steps, currentStep, showConfirmations, handleRegistration, countries, showAIAssistant, AIAssistant, userData}) {
+import AIAssistant from './AIAssistant';
+
+function Application() {
+
+  const {
+    userData,
+    setUserData,
+    currentStep,
+    setCurrentStep,
+    steps,
+    getProgressPercentage,
+    proceedToAdmission,
+    completeAdmissionStep,
+    completeVisaProcess,
+    visaChecklist,
+    toggleVisaRequirement,
+    showAIAssistant,
+    setShowAIAssistant,
+    admissionProgress,
+    visaRequirements,
+    programRequirements,
+    admissionSteps,
+    testimonials,
+    confirmationCodes,
+    setConfirmationCodes,
+    showConfirmations,
+    setShowConfirmations,
+    isVerifying,
+    setIsVerifying,
+    handleRegistration,
+    verifyEmail,
+    verifyPhone,
+    resendEmailCode,
+    resendPhoneCode,
+    countries,
+  } = useContext(ApplicationContext);
+
+  console.log("Current Step:", currentStep);
+
   return (
-     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -97,19 +137,7 @@ function Application({getProgressPercentage, steps, currentStep, showConfirmatio
                               <Input id="name" name="name" required placeholder="Enter your full name" />
                             </div>
                             <div>
-                              <Label htmlFor="age">Age *</Label>
-                              <Input
-                                id="age"
-                                name="age"
-                                type="number"
-                                min="16"
-                                max="65"
-                                required
-                                placeholder="Your age"
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor="nationality">Nationality *</Label>
+                              <Label htmlFor="nationality">Country *</Label>
                               <select
                                 id="nationality"
                                 name="nationality"
@@ -164,62 +192,7 @@ function Application({getProgressPercentage, steps, currentStep, showConfirmatio
                                 <option value="Vietnamese">Vietnamese</option>
                               </select>
                             </div>
-                            <div>
-                              <Label htmlFor="currentCountry">Current Country of Residence *</Label>
-                              <select
-                                id="currentCountry"
-                                name="currentCountry"
-                                required
-                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                              >
-                                <option value="">Select your current country</option>
-                                <option value="Afghanistan">Afghanistan</option>
-                                <option value="Albania">Albania</option>
-                                <option value="Algeria">Algeria</option>
-                                <option value="Argentina">Argentina</option>
-                                <option value="Australia">Australia</option>
-                                <option value="Austria">Austria</option>
-                                <option value="Bangladesh">Bangladesh</option>
-                                <option value="Belgium">Belgium</option>
-                                <option value="Brazil">Brazil</option>
-                                <option value="Canada">Canada</option>
-                                <option value="China">China</option>
-                                <option value="Denmark">Denmark</option>
-                                <option value="Egypt">Egypt</option>
-                                <option value="France">France</option>
-                                <option value="Germany">Germany</option>
-                                <option value="India">India</option>
-                                <option value="Indonesia">Indonesia</option>
-                                <option value="Iran">Iran</option>
-                                <option value="Iraq">Iraq</option>
-                                <option value="Italy">Italy</option>
-                                <option value="Japan">Japan</option>
-                                <option value="Jordan">Jordan</option>
-                                <option value="Kenya">Kenya</option>
-                                <option value="Malaysia">Malaysia</option>
-                                <option value="Mexico">Mexico</option>
-                                <option value="Netherlands">Netherlands</option>
-                                <option value="Nigeria">Nigeria</option>
-                                <option value="Norway">Norway</option>
-                                <option value="Pakistan">Pakistan</option>
-                                <option value="Philippines">Philippines</option>
-                                <option value="Poland">Poland</option>
-                                <option value="Russia">Russia</option>
-                                <option value="Saudi Arabia">Saudi Arabia</option>
-                                <option value="Singapore">Singapore</option>
-                                <option value="South Africa">South Africa</option>
-                                <option value="South Korea">South Korea</option>
-                                <option value="Spain">Spain</option>
-                                <option value="Sweden">Sweden</option>
-                                <option value="Switzerland">Switzerland</option>
-                                <option value="Thailand">Thailand</option>
-                                <option value="Turkey">Turkey</option>
-                                <option value="UAE">United Arab Emirates</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="USA">United States</option>
-                                <option value="Vietnam">Vietnam</option>
-                              </select>
-                            </div>
+
                           </div>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                             <div>
@@ -1160,10 +1133,10 @@ function Application({getProgressPercentage, steps, currentStep, showConfirmatio
                         <div
                           key={index}
                           className={`flex items-center justify-between p-3 rounded-lg border ${index < admissionProgress
-                              ? "bg-green-50 border-green-200"
-                              : index === admissionProgress
-                                ? "bg-blue-50 border-blue-200"
-                                : "bg-gray-50 border-gray-200"
+                            ? "bg-green-50 border-green-200"
+                            : index === admissionProgress
+                              ? "bg-blue-50 border-blue-200"
+                              : "bg-gray-50 border-gray-200"
                             }`}
                         >
                           <div className="flex items-center gap-3">

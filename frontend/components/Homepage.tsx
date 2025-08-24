@@ -26,27 +26,11 @@ import {
     BookOpen,
 } from "lucide-react"
 
-type Country = {
-    id: string | number
-    flag: React.ReactNode
-    name: string
-}
+import { useContext } from "react";
+import { useApplication } from "@/context/ApplicationContext"
 
-type Testimonial = {
-    rating: number
-    quote: string
-    name: string
-    country: string
-    university: string
-}
-
-interface HomepageProps {
-    startApplication: () => void
-    countries: Country[]
-    testimonials: Testimonial[]
-}
-
-function Homepage({ startApplication, countries, testimonials }: HomepageProps) {
+function Homepage({ startApplication }) {
+    const {countries, testimonials} = useApplication();
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
             {/* Navigation */}

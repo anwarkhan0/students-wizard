@@ -5,7 +5,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Student Wizard',
-  description: 'Created with Nextjs ',
+  description: 'Student Wizard is a comprehensive platform designed to assist students and automate their academic journey, offering personalized guidance, resources, and tools to enhance their learning experience.',
 }
 
 export default function RootLayout({
