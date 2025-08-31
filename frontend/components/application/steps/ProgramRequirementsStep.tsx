@@ -1,5 +1,12 @@
+import { useContext } from 'react';
+import { ApplicationContext } from '@/context/ApplicationContext';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
 function ProgramRequirementsStep() {
   const { userData, programRequirements, proceedToAdmission } = useContext(ApplicationContext);
+
+  console.log(userData)
 
   return (
     <div className="space-y-6">

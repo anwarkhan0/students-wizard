@@ -8,6 +8,9 @@ import RecommendationsList from '../recommendations/RecommendationsList';
 import CustomSearchCard from '../recommendations/CustomSearchCard';
 
 function RecommendationsStep() {
+
+  const { currentStep, setCurrentStep } = useContext(ApplicationContext);
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
