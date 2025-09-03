@@ -11,6 +11,8 @@ import './auth/strategies/google.strategy';
 dotenv.config();
 
 const app = express();
+// { origin: process.env.FRONTEND_URL, credentials: true }
+app.use(cors());
 app.use(morgan('dev')); 
 app.use(express.json());
 
@@ -19,9 +21,8 @@ app.use(session({ secret: 'my-secret', resave: false, saveUninitialized: false }
 app.use(passport.initialize());
 app.use(passport.session());
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
 
 const client = new Client({

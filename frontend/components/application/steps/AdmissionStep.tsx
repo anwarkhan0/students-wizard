@@ -1,19 +1,21 @@
-
 // components/Application/steps/AdmissionStep.jsx
-import { useContext } from 'react';
-import { ApplicationContext } from '@/context/ApplicationContext';
+import { useContext } from "react";
+import { ApplicationContext } from "@/context/ApplicationContext";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
-import AILetterGenerator from '../AILetterGenerator';
+import AILetterGenerator from "../AILetterGenerator";
 
 function AdmissionStep() {
-  const { admissionSteps, admissionProgress, completeAdmissionStep, userData } = useContext(ApplicationContext);
+  const { admissionSteps, admissionProgress, completeAdmissionStep, userData } =
+    useContext(ApplicationContext);
 
   return (
     <div className="space-y-6">
       <div className="mb-4">
         <h3 className="font-semibold mb-2">Phase 1: Admission Application</h3>
-        <p className="text-gray-600">Complete the following steps for your university application</p>
+        <p className="text-gray-600">
+          Complete the following steps for your university application
+        </p>
       </div>
 
       <div className="space-y-3">
@@ -34,19 +36,26 @@ function AdmissionStep() {
               ) : (
                 <div
                   className={`w-5 h-5 rounded-full border-2 ${
-                    index === admissionProgress ? "border-blue-600" : "border-gray-300"
+                    index === admissionProgress
+                      ? "border-blue-600"
+                      : "border-gray-300"
                   }`}
                 />
               )}
-              <span className={index < admissionProgress ? "text-green-800" : "text-gray-700"}>
+              <span
+                className={
+                  index < admissionProgress ? "text-green-800" : "text-gray-700"
+                }
+              >
                 {step}
               </span>
             </div>
-            {index === admissionProgress && admissionProgress < admissionSteps.length && (
-              <Button size="sm" onClick={completeAdmissionStep}>
-                Complete
-              </Button>
-            )}
+            {index === admissionProgress &&
+              admissionProgress < admissionSteps.length && (
+                <Button size="sm" onClick={completeAdmissionStep}>
+                  Complete
+                </Button>
+              )}
           </div>
         ))}
       </div>
@@ -56,7 +65,9 @@ function AdmissionStep() {
       {admissionProgress === admissionSteps.length && (
         <div className="text-center p-4 bg-green-50 rounded-lg">
           <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
-          <p className="text-green-800 font-medium">Admission application completed!</p>
+          <p className="text-green-800 font-medium">
+            Admission application completed!
+          </p>
           <p className="text-green-600 text-sm">Moving to visa process...</p>
         </div>
       )}

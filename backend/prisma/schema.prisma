@@ -1,103 +1,120 @@
-// This Prisma schema defines the database structure for a student application wizard system.
-
-// The datasource block configures the connection to a PostgreSQL database using an environment variable.
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// The generator block tells Prisma to generate a TypeScript/JavaScript client for database access.
 generator client {
   provider = "prisma-client-js"
 }
 
-// User model: represents a user of the system.
-// - id: unique identifier (UUID)
-// - name: user's name
-// - email: unique email address
-// - provider: authentication provider (e.g., Google, local)
-// - applications: list of applications submitted by the user
-// - createdAt: timestamp when the user was created
+// ====================
+// User & Profile
+// ====================
 model User {
-  id             String   @id @default(uuid())
-  email          String   @unique
-  password       String?  // Nullable for Google users
-  name           String?
-  googleId       String?  @unique
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  applications   Application[]
+  id                  String    @id @default(uuid())
+  email               String    @unique
+  password            String?   // Nullable for Google users
+  name                String?
+  googleId            String?   @unique
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Profile
+  age                 String?
+  nationality         String?
+  currentCountry      String?
+  phone               String?
+  currentEducation    String?
+  gpa                 String?
+  fieldOfStudy        String?
+  institution         String?
+  academicAchievements String?
+  englishLevel        String?
+  englishTests        String?
+  studyLevel          String?
+  startDate           String?
+  budget              String?
+  workExperience      String?
+  researchExperience  String?
+  extracurricular     String?
+  careerGoals         String?
+
+  // Relations
+  applications        Application[]
+  targetCountries     UserTargetCountry[]
+  targetPrograms      UserTargetProgram[]
 }
 
-
-// Country model: represents a country to which students can apply.
-// - id: unique identifier (UUID)
-// - name: country name
-// - visaInfo: visa information (string, could be JSON or text)
-// - universities: list of universities in this country
-// - applications: applications associated with this country
+// ====================
+// Country
+// ====================
 model Country {
   id           String         @id @default(uuid())
   name         String
   visaInfo     String
   universities University[]
-  applications Application[]  // Opposite relation to Application.country
+  applications Application[]
+  userTargets  UserTargetCountry[]
 }
 
-// University model: represents a university in a country.
-// - id: unique identifier (UUID)
-// - name: university name
-// - countryId: foreign key to Country
-// - country: relation to Country
-// - programs: list of programs offered by the university
-// - applications: applications to this university
+// ====================
+// University
+// ====================
 model University {
-  id         String     @id @default(uuid())
-  name       String
-  countryId  String
-  country    Country    @relation(fields: [countryId], references: [id])
-  programs   Program[]
-  applications Application[] // Opposite relation to Application.university
+  id           String         @id @default(uuid())
+  name         String
+  countryId    String
+  country      Country        @relation(fields: [countryId], references: [id])
+  programs     Program[]
+  applications Application[]
 }
 
-// Program model: represents a program at a university.
-// - id: unique identifier (UUID)
-// - name: program name
-// - universityId: foreign key to University
-// - university: relation to University
-// - admissionSteps: JSON array (as string) of admission steps
-// - visaSteps: JSON array (as string) of visa steps
-// - applications: applications to this program
+// ====================
+// Program
+// ====================
 model Program {
-  id            String       @id @default(uuid())
+  id            String              @id @default(uuid())
   name          String
   universityId  String
-  university    University  @relation(fields: [universityId], references: [id])
-  admissionSteps String     // JSON array of steps
-  visaSteps      String     // JSON array of steps
+  university    University          @relation(fields: [universityId], references: [id])
+  admissionSteps String             // JSON array of steps
+  visaSteps      String             // JSON array of steps
   applications   Application[]
+  requirements   ProgramRequirement? // One-to-one (can extend to one-to-many if needed)
+  userTargets    UserTargetProgram[]
 }
 
-// Application model: represents a user's application to a program at a university in a country.
-// - id: unique identifier (UUID)
-// - userId, countryId, universityId, programId: foreign keys
-// - status: application status (default: "in_progress")
-// - currentPhase: current phase of the application process (default: 1)
-// - createdAt, updatedAt: timestamps
-// - user, country, university, program: relations to respective models
-// - steps: list of step progress records for this application
+// ====================
+// Program Requirements
+// ====================
+model ProgramRequirement {
+  id             String   @id @default(uuid())
+  programId      String   @unique
+  minGpa         Float?
+  requiredEnglishLevel String?   // e.g. "B2", "C1"
+  requiredEnglishTest  String?   // e.g. "IELTS", "TOEFL"
+  minEnglishScore Float?
+  requiredStudyLevel   String?   // e.g. "Bachelor", "Master"
+  requiredFieldOfStudy String?   // e.g. "Computer Science", "Engineering"
+  additionalNotes      String?
+
+  program Program @relation(fields: [programId], references: [id])
+}
+
+// ====================
+// Application
+// ====================
 model Application {
   id            String   @id @default(uuid())
   userId        String
   countryId     String
   universityId  String
   programId     String
-  status        String   @default("in_progress") // or: completed, rejected, etc.
+  status        String   @default("in_progress")
   currentPhase  Int      @default(1)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  // Relationships
   user        User        @relation(fields: [userId], references: [id])
   country     Country     @relation(fields: [countryId], references: [id])
   university  University  @relation(fields: [universityId], references: [id])
@@ -105,13 +122,9 @@ model Application {
   steps       StepProgress[]
 }
 
-// StepProgress model: tracks the progress of each step in an application.
-// - id: unique identifier (UUID)
-// - applicationId: foreign key to Application
-// - stepTitle: title of the step
-// - completed: whether the step is completed
-// - phase: phase of the step (1 = admission, 2 = visa)
-// - application: relation to Application
+// ====================
+// Step Progress
+// ====================
 model StepProgress {
   id             String   @id @default(uuid())
   applicationId  String
@@ -120,4 +133,25 @@ model StepProgress {
   phase          Int      // 1 = admission, 2 = visa
 
   application Application @relation(fields: [applicationId], references: [id])
+}
+
+// ====================
+// User Preferences (Normalized)
+// ====================
+model UserTargetCountry {
+  id        String  @id @default(uuid())
+  userId    String
+  countryId String
+
+  user     User    @relation(fields: [userId], references: [id])
+  country  Country @relation(fields: [countryId], references: [id])
+}
+
+model UserTargetProgram {
+  id        String  @id @default(uuid())
+  userId    String
+  programId String
+
+  user     User    @relation(fields: [userId], references: [id])
+  program  Program @relation(fields: [programId], references: [id])
 }

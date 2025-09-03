@@ -15,10 +15,6 @@ function Application() {
     showAIAssistant,
   } = useContext(ApplicationContext);
 
-  console.log("Current Step:", currentStep); 
-  console.log("Steps:", steps);
-  console.log("Progress Percentage:", getProgressPercentage());
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-6xl mx-auto">

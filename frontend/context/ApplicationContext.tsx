@@ -98,9 +98,14 @@ const defaultValue: AppContextType = {
   setShowAIAssistant: () => {},
   admissionProgress: 0,
   visaRequirements,
-  programRequirements,
+  programRequirements: Object.values(programRequirements),
   admissionSteps,
-  confirmationCodes: { email: "", phone: "", generatedEmailCode: "", generatedPhoneCode: "" },
+  confirmationCodes: {
+    email: "",
+    phone: "",
+    generatedEmailCode: "",
+    generatedPhoneCode: "",
+  },
   setConfirmationCodes: () => {},
   showConfirmations: false,
   setShowConfirmations: () => {},
@@ -121,16 +126,23 @@ export function ApplicationProvider({ children }: { children: ReactNode }) {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [userData, setUserData] = useState<UserData>({});
   const [admissionProgress, setAdmissionProgress] = useState<number>(0);
-  const [visaChecklist, setVisaChecklist] = useState<Record<string, boolean>>({});
+  const [visaChecklist, setVisaChecklist] = useState<Record<string, boolean>>(
+    {}
+  );
   const [showAIAssistant, setShowAIAssistant] = useState<boolean>(true);
-  const [confirmationCodes, setConfirmationCodes] = useState<Record<string, string>>({
+  const [confirmationCodes, setConfirmationCodes] = useState<
+    Record<string, string>
+  >({
     email: "",
     phone: "",
     generatedEmailCode: "",
     generatedPhoneCode: "",
   });
   const [showConfirmations, setShowConfirmations] = useState<boolean>(false);
-  const [isVerifying, setIsVerifying] = useState<{ email: boolean; phone: boolean }>({ email: false, phone: false });
+  const [isVerifying, setIsVerifying] = useState<{
+    email: boolean;
+    phone: boolean;
+  }>({ email: false, phone: false });
 
   const steps = defaultValue.steps;
 
@@ -156,24 +168,52 @@ export function ApplicationProvider({ children }: { children: ReactNode }) {
   }
 
   function completeVisaProcess() {
-    if (Object.values(visaChecklist).filter(Boolean).length === visaRequirements.length) {
+    if (
+      Object.values(visaChecklist).filter(Boolean).length ===
+      visaRequirements.length
+    ) {
       setCurrentStep(5);
     }
   }
 
   function toggleVisaRequirement(requirement: string) {
-    setVisaChecklist((prev) => ({ ...prev, [requirement]: !prev[requirement] }));
+    setVisaChecklist((prev) => ({
+      ...prev,
+      [requirement]: !prev[requirement],
+    }));
+  }
+
+  async function submitUserData(data: UserData) {
+    try {
+      const res = await fetch("http://localhost:4000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Failed to submit user data:", res.status, text);
+      } else {
+        const json = await res.json();
+        console.log("Submitted user:", json);
+      }
+    } catch (err) {
+      console.error("Submit user error:", err);
+    }
   }
 
   function handleRegistration(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-
     const emailCode = Math.floor(100000 + Math.random() * 900000).toString();
     const phoneCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-    const targetCountries = Array.from(formData.getAll("targetCountries")) as string[];
-    const targetPrograms = Array.from(formData.getAll("targetPrograms")) as string[];
+    const targetCountries = Array.from(
+      formData.getAll("targetCountries")
+    ) as string[];
+    const targetPrograms = Array.from(
+      formData.getAll("targetPrograms")
+    ) as string[];
 
     setUserData((prev) => ({
       ...prev,
@@ -185,7 +225,8 @@ export function ApplicationProvider({ children }: { children: ReactNode }) {
       gpa: (formData.get("gpa") as string) || "",
       fieldOfStudy: (formData.get("fieldOfStudy") as string) || "",
       institution: (formData.get("institution") as string) || "",
-      academicAchievements: (formData.get("academicAchievements") as string) || "",
+      academicAchievements:
+        (formData.get("academicAchievements") as string) || "",
       englishLevel: (formData.get("englishLevel") as string) || "",
       englishTests: (formData.get("englishTests") as string) || "",
       targetCountries,
@@ -212,9 +253,16 @@ export function ApplicationProvider({ children }: { children: ReactNode }) {
     setIsVerifying((v) => ({ ...v, email: true }));
     setTimeout(() => {
       setIsVerifying((v) => ({ ...v, email: false }));
-      setUserData((prev) =>
-        confirmationCodes.email === confirmationCodes.generatedEmailCode ? { ...prev, emailConfirmed: true } : prev,
-      );
+      setUserData((prev) => {
+        const updated =
+          confirmationCodes.email === confirmationCodes.generatedEmailCode
+            ? { ...prev, emailConfirmed: true }
+            : prev;
+        // if (updated.emailConfirmed && updated.phoneConfirmed) {
+        //   submitUserData(updated);
+        // }
+        return updated;
+      });
     }, 1500);
   }
 
@@ -222,21 +270,36 @@ export function ApplicationProvider({ children }: { children: ReactNode }) {
     setIsVerifying((v) => ({ ...v, phone: true }));
     setTimeout(() => {
       setIsVerifying((v) => ({ ...v, phone: false }));
-      setUserData((prev) =>
-        confirmationCodes.phone === confirmationCodes.generatedPhoneCode ? { ...prev, phoneConfirmed: true } : prev,
-      );
+      setUserData((prev) => {
+        const updated =
+          confirmationCodes.phone === confirmationCodes.generatedPhoneCode
+            ? { ...prev, phoneConfirmed: true }
+            : prev;
+        if (updated.phoneConfirmed && updated.emailConfirmed) {
+          submitUserData(updated);
+        }
+        return updated;
+      });
     }, 1500);
   }
 
   function resendEmailCode() {
     const newCode = Math.floor(100000 + Math.random() * 900000).toString();
-    setConfirmationCodes((c) => ({ ...c, generatedEmailCode: newCode, email: "" }));
+    setConfirmationCodes((c) => ({
+      ...c,
+      generatedEmailCode: newCode,
+      email: "",
+    }));
     alert(`New email code sent: ${newCode}`);
   }
 
   function resendPhoneCode() {
     const newCode = Math.floor(100000 + Math.random() * 900000).toString();
-    setConfirmationCodes((c) => ({ ...c, generatedPhoneCode: newCode, phone: "" }));
+    setConfirmationCodes((c) => ({
+      ...c,
+      generatedPhoneCode: newCode,
+      phone: "",
+    }));
     alert(`New phone code sent: ${newCode}`);
   }
 
@@ -274,11 +337,16 @@ export function ApplicationProvider({ children }: { children: ReactNode }) {
     testimonials,
   };
 
-  return <ApplicationContext.Provider value={value}>{children}</ApplicationContext.Provider>;
+  return (
+    <ApplicationContext.Provider value={value}>
+      {children}
+    </ApplicationContext.Provider>
+  );
 }
 
 export const useApplication = () => {
   const context = useContext(ApplicationContext);
-  if (!context) throw new Error("useApplication must be used within ApplicationProvider");
+  if (!context)
+    throw new Error("useApplication must be used within ApplicationProvider");
   return context;
 };

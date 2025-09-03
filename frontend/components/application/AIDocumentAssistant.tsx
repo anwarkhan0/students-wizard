@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 import { Card } from '../ui/card';
 import { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FileText, RefreshCw, Copy, Download } from "lucide-react";
 
 // AI Document Assistant Component
-function AIDocumentAssistant ({ visaRequirements, userData }) {
+function AIDocumentAssistant({ visaRequirements, userData }) {
   const [selectedDocument, setSelectedDocument] = useState("")
   const [documentTemplate, setDocumentTemplate] = useState("")
   const [isGenerating, setIsGenerating] = useState(false)
