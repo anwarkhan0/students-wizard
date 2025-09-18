@@ -29,8 +29,11 @@ function PersonalInfoSection() {
           >
             <option value="">Select your nationality</option>
             <option value="Afghan">Afghan</option>
-            <option value="Albanian">Albanian</option>
-            {/* Add more nationalities as needed */}
+            {countries && countries.map((country) => (
+              <option key={country.name} value={country.name}>
+                {country.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>

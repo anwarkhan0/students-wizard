@@ -1,7 +1,24 @@
-export   const countries = [
-    { id: 1, name: "United States", flag: "🇺🇸" },
-    { id: 2, name: "United Kingdom", flag: "🇬🇧" },
-    { id: 3, name: "Canada", flag: "🇨🇦" },
-    { id: 4, name: "Australia", flag: "🇦🇺" },
-    { id: 5, name: "Germany", flag: "🇩🇪" },
-  ]
+export const countries = [
+  { id: 1, name: "United States", flag: "🇺🇸" },
+  { id: 2, name: "United Kingdom", flag: "🇬🇧" },
+  { id: 3, name: "Canada", flag: "🇨🇦" },
+  { id: 4, name: "Australia", flag: "🇦🇺" },
+  { id: 5, name: "Germany", flag: "🇩🇪" },
+  { id: 6, name: "France", flag: "🇫🇷" },
+  { id: 7, name: "Italy", flag: "🇮🇹" },
+  { id: 8, name: "Spain", flag: "🇪🇸" },
+  { id: 9, name: "Japan", flag: "🇯🇵" },
+  { id: 10, name: "China", flag: "🇨🇳" },
+  { id: 11, name: "India", flag: "🇮🇳" },
+  { id: 12, name: "Brazil", flag: "🇧🇷" },
+  { id: 13, name: "Russia", flag: "🇷🇺" },
+  { id: 14, name: "Mexico", flag: "🇲🇽" },
+  { id: 15, name: "South Africa", flag: "🇿🇦" },
+  { id: 16, name: "Pakistan", flag: "🇵🇰" },
+  { id: 17, name: "Bangladesh", flag: "🇧🇩" },
+  { id: 18, name: "Sri Lanka", flag: "🇱🇰" },
+  { id: 19, name: "Nepal", flag: "🇳🇵" },
+  { id: 20, name: "Maldives", flag: "🇲🇻" },
+  { id: 21, name: "Bhutan", flag: "🇧🇹" },
+  { id: 22, name: "Afghanistan", flag: "🇦🇫" }
+];
